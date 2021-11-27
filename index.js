@@ -175,7 +175,7 @@ const sendTweet = (earthquake) => {
   });
 
   client.post("statuses/update", {
-    status: "",
+    status: `#Deprem\n#HAZTURK\nBüyüklük: ${earthquake.mag} ML\nKonum: ${earthquake.location}\nZaman: ${earthquake.date}\nDerinlik: ${earthquake.depth}\nEnlem: ${earthquake.lat}°\nBoylam: ${earthquake.lng}°\nhttps://rebrand.ly/HAZTURK`,
     function(error, tweet, response) {
       if (error) throw error;
       console.log(tweet); // Tweet body.
