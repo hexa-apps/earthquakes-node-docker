@@ -53,6 +53,7 @@ let evalRes = (res) => {
 let sendNewEarthQuakesNoti = (earthquakes) => {
   earthquakes.forEach((earthquake) => {
     sendNotification(earthquake);
+    sendTweet(earthquake);
   });
 };
 
@@ -134,7 +135,8 @@ let sendNotification = (earthquake) => {
   let includedSegments = ["allmag"];
   if (earthquake.mag >= 2.5) {
     includedSegments.push("twofivemag");
-  } else if (earthquake.mag >= 4.5) {
+  }
+  if (earthquake.mag >= 4.5) {
     includedSegments.push("fourfivemag");
   }
   fetch("https://onesignal.com/api/v1/notifications", {
@@ -161,7 +163,6 @@ let sendNotification = (earthquake) => {
   })
     .then((response) => console.log("Sent", response.text))
     .catch((error) => console.log("Sending error", error));
-  sendTweet(earthquake);
   writeEQToFile(`${earthquake.mag}-${earthquake.location}`);
 };
 
