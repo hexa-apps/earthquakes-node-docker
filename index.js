@@ -2,6 +2,7 @@ import fetch from "node-fetch";
 import cheerio from "cheerio";
 import fs from "fs";
 import { createRequire } from "module";
+import Twitter from "twitter";
 const require = createRequire(import.meta.url);
 var configJSON = require("./config.json");
 
@@ -160,5 +161,24 @@ let sendNotification = (earthquake) => {
   })
     .then((response) => console.log("Sent", response.text))
     .catch((error) => console.log("Sending error", error));
+  sendTweet(earthquake);
   writeEQToFile(`${earthquake.mag}-${earthquake.location}`);
+};
+
+const sendTweet = (earthquake) => {
+  const client = new Twitter({
+    consumer_key: configJSON.TWITTER_APIKEY,
+    consumer_secret: configJSON.TWITTER_APIKEY_SECRET,
+    access_token_key: configJSON.TWITTER_ACCESS_TOKEN,
+    access_token_secret: configJSON.TWITTER_ACCESS_TOKEN_SECRET,
+  });
+
+  client.post("statuses/update", {
+    status: "",
+    function(error, tweet, response) {
+      if (error) throw error;
+      console.log(tweet); // Tweet body.
+      console.log(response); // Raw response object.
+    },
+  });
 };
