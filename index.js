@@ -11,7 +11,7 @@ setInterval(
     fetch(configJSON.EQ_URL)
       .then((res) => res.text())
       .then((res) => evalRes(res))
-      .catch((err) => console.log(err)),
+      .catch((err) => console.log("en tepede girdi", err)),
   configJSON.INTERVAL
 );
 
@@ -47,14 +47,15 @@ let evalRes = (res) => {
         return;
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log("eval res içi ", err));
 };
 
 let sendNewEarthQuakesNoti = (earthquakes) => {
   earthquakes.forEach((earthquake) => {
     sendNotification(earthquake);
     if (earthquake.mag >= 3.5) {
-      sendTweet(earthquake);
+      console.log("senddd tweeet")
+      // sendTweet(earthquake);
     }
   });
 };
@@ -86,7 +87,7 @@ let writeEarthquakesToFile = (earthquakes) => {
     "previousEarthquakes.json",
     JSON.stringify(earthquakes),
     function (err) {
-      if (err) return console.log(err);
+      if (err) return console.log("write earthquakteenn", err);
       console.log("Written earthquakes.json");
     }
   );
@@ -96,7 +97,7 @@ const readFile = async (filePath) => {
     const data = await fs.promises.readFile(filePath, "utf8");
     return data;
   } catch (err) {
-    console.log(err);
+    console.log("readfilleeedan olmuş", err);
   }
 };
 
@@ -128,7 +129,7 @@ const getEarthquakesBySelectedCriteria = (newEarthquakes) => {
 
 let writeEQToFile = (eq) => {
   fs.writeFile("output.txt", eq, function (err) {
-    if (err) return console.log(err);
+    if (err) return console.log("write eq ne ya", err);
     console.log("Written output.txt");
   });
 };
@@ -141,30 +142,30 @@ let sendNotification = (earthquake) => {
   if (earthquake.mag >= 4.5) {
     includedSegments.push("fourfivemag");
   }
-  fetch("https://onesignal.com/api/v1/notifications", {
-    method: "POST",
-    headers: {
-      Authorization: "Basic " + configJSON.OS_REST_KEY,
-      "Content-Type": "application/json",
-    },
-    // json: true,
-    body: JSON.stringify({
-      app_id: configJSON.OS_APP_ID,
-      included_segments: includedSegments,
-      contents: { en: `${earthquake.mag}-${earthquake.location}` },
-      headings: { en: "DEPREM" },
-      data: {
-        date: earthquake.date,
-        location: earthquake.location,
-        lat: earthquake.lat,
-        lng: earthquake.lng,
-        mag: earthquake.mag,
-        depth: earthquake.depth,
-      },
-    }),
-  })
-    .then((response) => console.log("Sent", response.text))
-    .catch((error) => console.log("Sending error", error));
+  // fetch("https://onesignal.com/api/v1/notifications", {
+  //   method: "POST",
+  //   headers: {
+  //     Authorization: "Basic " + configJSON.OS_REST_KEY,
+  //     "Content-Type": "application/json",
+  //   },
+  //   // json: true,
+  //   body: JSON.stringify({
+  //     app_id: configJSON.OS_APP_ID,
+  //     included_segments: includedSegments,
+  //     contents: { en: `${earthquake.mag}-${earthquake.location}` },
+  //     headings: { en: "DEPREM" },
+  //     data: {
+  //       date: earthquake.date,
+  //       location: earthquake.location,
+  //       lat: earthquake.lat,
+  //       lng: earthquake.lng,
+  //       mag: earthquake.mag,
+  //       depth: earthquake.depth,
+  //     },
+  //   }),
+  // })
+  //   .then((response) => console.log("Sent", response.text))
+  //   .catch((error) => console.log("Sending error", error));
   writeEQToFile(`${earthquake.mag}-${earthquake.location}`);
 };
 
