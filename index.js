@@ -53,9 +53,9 @@ let evalRes = (res) => {
 let sendNewEarthQuakesNoti = (earthquakes) => {
   earthquakes.forEach((earthquake) => {
     sendNotification(earthquake);
-    if (earthquake.mag >= 3.5) {
-      sendTweet(earthquake);
-    }
+    // if (earthquake.mag >= 3.5) {
+    //   sendTweet(earthquake);
+    // }
   });
 };
 
