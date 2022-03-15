@@ -11,7 +11,7 @@ setInterval(
     fetch(configJSON.EQ_URL)
       .then((res) => res.text())
       .then((res) => evalRes(res))
-      .catch((err) => console.log(err)),
+      .catch((err) => console.log("en tepeden", err)),
   configJSON.INTERVAL
 );
 
@@ -86,7 +86,7 @@ let writeEarthquakesToFile = (earthquakes) => {
     "previousEarthquakes.json",
     JSON.stringify(earthquakes),
     function (err) {
-      if (err) return console.log(err);
+      if (err) return console.log("yazarken hata", err);
       console.log("Written earthquakes.json");
     }
   );
@@ -96,7 +96,7 @@ const readFile = async (filePath) => {
     const data = await fs.promises.readFile(filePath, "utf8");
     return data;
   } catch (err) {
-    console.log(err);
+    console.log("okurken hata", err);
   }
 };
 
@@ -128,7 +128,7 @@ const getEarthquakesBySelectedCriteria = (newEarthquakes) => {
 
 let writeEQToFile = (eq) => {
   fs.writeFile("output.txt", eq, function (err) {
-    if (err) return console.log(err);
+    if (err) return console.log("eq to file hata", err);
     console.log("Written output.txt");
   });
 };
@@ -179,6 +179,7 @@ const sendTweet = (earthquake) => {
   client.post("statuses/update", {
     status: `#Deprem\n#HAZTURK\nBüyüklük: ${earthquake.mag} ML\nKonum: ${earthquake.location}\nZaman: ${earthquake.date}\nDerinlik: ${earthquake.depth}\nEnlem: ${earthquake.lat}°\nBoylam: ${earthquake.lng}°\nhttps://rebrand.ly/HAZTURK`,
     function(error, tweet, response) {
+      console.log("send tweet içinde olabilir");
       if (error) throw error;
       console.log(tweet); // Tweet body.
       console.log(response); // Raw response object.
